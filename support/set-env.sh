@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export S3_BUCKET="yg-php-buildpack-opi"
-export BUILD_SUFFIX=".v16"
+export BUILD_SUFFIX=".v17"
 
 # LIBS
 #export LIBJPEG_VERSION="9a"

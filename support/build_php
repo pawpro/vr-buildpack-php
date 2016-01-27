@@ -35,7 +35,8 @@ if [[ $1 == "clean" ]]; then
     libtool \
     autoconf \
     git-core \
-    yasm
+    yasm \
+    nasm
 
 fi
 mkdir -p /app/local
