@@ -248,13 +248,6 @@ export COMPOSER_HOME="${CACHE_DIR}/.composer"
 
 export_env_dir "$3"
 
-[ ! -d "$HOME/bin" ] && mkdir -p "$HOME/bin"
-# Download jq binary for JSON processing
-export PATH="$HOME/bin:$PATH"
-curl "${S3_BUCKET}.s3.amazonaws.com/bin/jq" -L -s -o - > "$HOME/bin/jq"
-chmod +x "$HOME/bin/jq"
-
-
 # START CONFIG
 S3_URL="http://s3.amazonaws.com/${S3_BUCKET}"
 NGINX_VERSION=1.8.0
@@ -284,7 +277,7 @@ NGINX_URL="${REPO_URL}/${NGINX_FILE}"
 PHP_URL="${REPO_URL}/${PHP_FILE}"
 PHP_LIBS_URL="${REPO_URL}/${PHP_LIBS_FILE}"
 MEMCACHED_URL="${REPO_URL}/${MEMCACHED_FILE}"
-COMPOSER_URL="http://getcomposer.org/composer.phar"
+COMPOSER_URL="${REPO_URL}/composer/composer.phar"
 
 
 # Read config variables from composer.json if it exists
@@ -298,6 +291,12 @@ if [ -f "$BUILD_DIR/composer.json" ]; then
     NGINX_INCLUDES=$(package_nginx_includes)
     USER_LOG_FILES=$(package_log_files)
 fi
+
+[ ! -d "$HOME/bin" ] && mkdir -p "$HOME/bin"
+# Download jq binary for JSON processing
+export PATH="$HOME/bin:$PATH"
+curl "${REPO_URL}/bin/jq" -L -s -o - > "$HOME/bin/jq"
+chmod +x "$HOME/bin/jq"
 
 [ ! -d "$BUILD_DIR/vendor" ] && mkdir -p "$BUILD_DIR/vendor"
 
