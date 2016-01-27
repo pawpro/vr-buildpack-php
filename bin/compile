@@ -279,6 +279,11 @@ PHP_LIBS_URL="${REPO_URL}/${PHP_LIBS_FILE}"
 MEMCACHED_URL="${REPO_URL}/${MEMCACHED_FILE}"
 COMPOSER_URL="${REPO_URL}/composer/composer.phar"
 
+[ ! -d "$HOME/bin" ] && mkdir -p "$HOME/bin"
+# Download jq binary for JSON processing
+export PATH="$HOME/bin:$PATH"
+curl "${REPO_URL}/bin/jq" -L -s -o - > "$HOME/bin/jq"
+chmod +x "$HOME/bin/jq"
 
 # Read config variables from composer.json if it exists
 if [ -f "$BUILD_DIR/composer.json" ]; then
@@ -291,12 +296,6 @@ if [ -f "$BUILD_DIR/composer.json" ]; then
     NGINX_INCLUDES=$(package_nginx_includes)
     USER_LOG_FILES=$(package_log_files)
 fi
-
-[ ! -d "$HOME/bin" ] && mkdir -p "$HOME/bin"
-# Download jq binary for JSON processing
-export PATH="$HOME/bin:$PATH"
-curl "${REPO_URL}/bin/jq" -L -s -o - > "$HOME/bin/jq"
-chmod +x "$HOME/bin/jq"
 
 [ ! -d "$BUILD_DIR/vendor" ] && mkdir -p "$BUILD_DIR/vendor"
 
