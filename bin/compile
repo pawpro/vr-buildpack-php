@@ -454,6 +454,9 @@ if [ -n "$BOOT_CMD" ]; then
 fi
 
 mkdir -p "bin"
+# include executable jq into build
+cp $HOME/bin/jq bin/
+chmod +x bin/jq
 cat > bin/run <<SH
 #!/usr/bin/env bash
 
