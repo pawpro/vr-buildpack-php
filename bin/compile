@@ -460,9 +460,12 @@ chmod +x bin/jq
 cat > bin/run <<SH
 #!/usr/bin/env bash
 
+logger=/tmp/logger
 pmsgr=/tmp/pmsgr
-rm -f \$pmsgr
-mkfifo \$pmsgr
+rm -f $logger
+rm -f $pmsgr
+mkfifo $pmsgr
+mkfifo $logger
 mesg y
 export NEW_RELIC_LICENSE_KEY=\$(grep newrelic_license_key /settings.yaml | awk '{print \$2}')
 
@@ -482,6 +485,11 @@ fi
 
 erb /app/conf/nginx.conf.erb > /app/vendor/nginx/conf/nginx.conf
 erb /app/conf/site.conf.erb > /app/vendor/nginx/conf/site.conf
+
+echo "Log streaming enabled"
+(
+   cat < $logger 1>&2
+)&
 
 echo "Starting FPM"
 (
